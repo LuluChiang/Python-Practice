@@ -47,13 +47,14 @@ class Solution:
 # 83. Remove Duplicates from Sorted List
 # Given the head of a sorted linked list, delete all duplicates such that each element appears only once. Return the linked list sorted as well.
     def deleteDuplicates(self, head: Optional[ListNode]) -> Optional[ListNode]:
-        output = head
-        while head.next != None:
-            if head.val == head.next.val:
-                head.next = head.next.next
-            head = head.next
-         
-        return output
+        if head != None:
+            cur = head
+            while cur.next != None:
+                if cur.val == cur.next.val:
+                    cur.next = cur.next.next
+                else:
+                    cur = cur.next         
+        return head 
 
 # 2. Add Two Numbers
 # You are given two non-empty linked lists representing two non-negative integers. The digits are stored in reverse order, and each of their nodes contains a single digit. Add the two numbers and return the sum as a linked list.
