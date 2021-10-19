@@ -56,11 +56,77 @@ class Solution:
                     cur = cur.next         
         return head 
 
-# 2. Add Two Numbers
+# 203. Remove Linked List Elements 
+# Given the head of a linked list and an integer val, remove all the nodes of the linked list that has Node.val == val, and return the new head.
+#
+# TODO: try this recursive solution again
+    def removeElements(self, head: Optional[ListNode], val: int) -> Optional[ListNode]:
+        if head == None: 
+            return head
+        head.next = self.removeElements(head.next, val)
+
+        if head.val == val:
+            return head.next
+        else:
+            return head
+
+# 206. Reverse Linked List
+# Given the head of a singly linked list, reverse the list, and return the reversed list.
+# Follow up: A linked list can be reversed either iteratively or recursively. Could you implement both?
+#
+    def reverseList(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        # iterative
+        pre = None
+        curr = head
+        revhead = head.next
+        while revhead != None:
+            curr.next = pre
+            pre = curr
+            curr = revhead
+            revhead = revhead.next
+        curr.next = pre
+        return curr
+
+        # recursive
+        if head == None or head.next == None:
+            return head
+        else:
+            rev_head = self.reverseList(head.next)
+            rev_cur = rev_head
+            while rev_cur.next != None:
+                rev_cur = rev_cur.next
+            head.next = None
+            rev_cur.next = head
+            return rev_head
+
+# 2. Add Two Numbers - medium
 # You are given two non-empty linked lists representing two non-negative integers. The digits are stored in reverse order, and each of their nodes contains a single digit. Add the two numbers and return the sum as a linked list.
 # You may assume the two numbers do not contain any leading zero, except the number 0 itself.
 #
     def addTwoNumbers(self, l1: Optional[ListNode], l2: Optional[ListNode]) -> Optional[ListNode]:
-        tmplist = ListNode()
+        curr = sumhead = ListNode()
+        carry = 0
+        while l1 != None or l2 != None or carry: 
+            curr.next = ListNode()    
+            sum = 0
+            if l1:
+                sum += l1.val
+                l1 = l1.next
+            if l2:
+                sum += l2.val
+                l2 = l2.next
         
-        return
+            currval = (sum + carry) % 10
+            carry = (sum + carry) // 10
+
+            curr.next = ListNode(currval)
+            curr = curr.next
+        
+        return sumhead.next
+
+
+# 141. Linked List Cycle
+# Given head, the head of a linked list, determine if the linked list has a cycle in it.
+# There is a cycle in a linked list if there is some node in the list that can be reached again by continuously following the next pointer. Internally, pos is used to denote the index of the node that tail's next pointer is connected to. Note that pos is not passed as a parameter.
+# Return true if there is a cycle in the linked list. Otherwise, return false.
+#
