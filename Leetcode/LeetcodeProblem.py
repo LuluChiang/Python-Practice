@@ -74,11 +74,13 @@ class Solution:
                     break         
         return max_count
     # O(n) solution  
+    # the key conception: when encounter the same character 'x' already apeared in tmp_str,
+    #   we reassign the tmp_str from the x's index + 1, and add 'x' in the tail 
     def lengthOfLongestSubstring2(self, s):
         tmp_str = ""
         max_count = 0
         for idx in range(0, len(s)):
-            if(s[idx] not in tmp_str):
+            if s[idx] not in tmp_str:
                 tmp_str += s[idx]
             else:
                 idx_samechar = tmp_str.index(s[idx])
@@ -227,3 +229,141 @@ class Solution:
                 tmp_list.append(num)
         
         return count
+
+# 53. Maximum Subarray - easy
+# Given an integer array nums, find the contiguous subarray (containing at least one number) which has the largest sum and return its sum.
+# A subarray is a contiguous part of an array.
+# Input: nums = [-2,1,-3,4,-1,2,1,-5,4]
+# Output: 6
+# Explanation: [4,-1,2,1] has the largest sum = 6.
+# Note: Using Dynamic Programing!!
+#  
+    def maxSubArray(self, nums: List[int]) -> int:
+        maxsum_for_curr = nums[0]
+        idx = 1
+        maxsum = nums[0]
+        while idx < len(nums):
+            if maxsum_for_curr > 0:
+               maxsum_for_curr = maxsum_for_curr + nums[idx]
+            else:
+               maxsum_for_curr = nums[idx]
+
+            maxsum = max(maxsum, maxsum_for_curr)
+            idx += 1
+        return maxsum
+
+# 58. Length of Last Word
+# Given a string s consisting of some words separated by some number of spaces, return the length of the last word in the string.
+# A word is a maximal substring consisting of non-space characters only.
+# Input: s = "   fly me   to   the moon  "
+# Output: 4
+# Explanation: The last word is "moon" with length 4.
+#
+    def lengthOfLastWord(self, s: str) -> int:
+        currword = 0
+        lastword = 0
+        for char in s:
+            if char == ' ':      
+                currword = 0
+            else:
+                currword += 1
+            if currword != 0:
+                lastword = currword
+        return lastword
+
+
+# 67. Add Binary
+# Given two binary strings a and b, return their sum as a binary string.
+# Example 1:
+# Input: a = "11", b = "1"
+# Output: "100"
+#
+    def addBinary(self, a: str, b: str) -> str:
+        list_a = list(a)
+        list_b = list(b)
+        carry = 0
+        sum = ''
+        while list_a or list_b or carry:
+            if list_a:
+                carry += int(list_a.pop())
+            if list_b:
+                carry += int(list_b.pop())
+            
+            sum = str(carry % 2) + sum
+            carry = carry // 2
+        
+        return sum
+
+# 69. Sqrt(x)
+# Given a non-negative integer x, compute and return the square root of x.
+# Since the return type is an integer, the decimal digits are truncated, and only the integer part of the result is returned.
+# Note: You are not allowed to use any built-in exponent function or operator, such as pow(x, 0.5) or x ** 0.5.
+# Example :
+#     Input: x = 8
+#     Output: 2
+#     Explanation: The square root of 8 is 2.82842..., and since the decimal part is truncated, 2 is returned.
+#
+    def mySqrt(self, x: int) -> int:
+        root = 0
+        while True:
+            if root * root > x:
+                return root - 1
+            root += 1
+
+# 70. Climbing Stairs
+# You are climbing a staircase. It takes n steps to reach the top.
+# Each time you can either climb 1 or 2 steps. In how many distinct ways can you climb to the top?
+# Example 1:
+#     Input: n = 2
+#     Output: 2
+#     Explanation: There are two ways to climb to the top.
+#     1. 1 step + 1 step
+#     2. 2 steps
+# Example 2:
+#     Input: n = 3
+#     Output: 3
+#     Explanation: There are three ways to climb to the top.
+#     1. 1 step + 1 step + 1 step
+#     2. 1 step + 2 steps
+#     3. 2 steps + 1 step
+# 
+    def climbStairs(self, n: int) -> int:
+        pre = 0
+        curr = 1
+        for idx in range(n):
+            curr = curr + pre
+            pre = curr - pre
+        return curr
+        # recursive
+        if n <= 2:
+            return n
+        else:
+            return self.climbStairs(n-1) + self.climbStairs(n-2) 
+
+# 88. Merge Sorted Array
+# You are given two integer arrays nums1 and nums2, sorted in non-decreasing order, and two integers m and n, 
+#   representing the number of elements in nums1 and nums2 respectively.
+# Merge nums1 and nums2 into a single array sorted in non-decreasing order.
+# The final sorted array should not be returned by the function, but instead be stored inside the array nums1. 
+# To accommodate this, nums1 has a length of m + n, where the first m elements denote the elements that should be merged, 
+#   and the last n elements are set to 0 and should be ignored. nums2 has a length of n.
+#
+# nums1.length == m + n
+# nums2.length == n
+    def merge(self, nums1: List[int], m: int, nums2: List[int], n: int) -> None:
+        """
+        Do not return anything, modify nums1 in-place instead.
+        """
+        for idx in range(n):
+            nums1[m + idx] = nums2[idx]
+
+        no_swap = True
+        for idx in range(m + n - 1, 0 , -1):
+            for bubble in range(idx):
+                if nums1[bubble] > nums1[bubble + 1]:
+                    nums1[bubble], nums1[bubble + 1] = nums1[bubble + 1], nums1[bubble]
+                    no_swap = False
+            if no_swap:
+                break
+        return 
+    
