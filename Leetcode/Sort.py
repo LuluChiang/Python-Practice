@@ -44,6 +44,29 @@ class sortAlgorith:
                     minidx = idx2
             nums[idx], nums[minidx] = nums[minidx], nums[idx]
         return nums
+    
+    def QuickSort(self, nums:List[int]) -> List[int]:
+        # Worst O(N^2)
+        # Best = Avg = O(NlogN)
+        if len(nums) <= 1:
+            return nums
+        pivot = nums[-1]
+        small = -1  # 0 ~ small <= pivot
+        large = 0   # small + 1 ~ large > pivot
+        for idx in range(len(nums) - 1):
+            if nums[idx] <= pivot:
+                nums[small + 1], nums[idx] = nums[idx], nums[small + 1]
+                small += 1
+                large += 1
+            elif nums[idx] > pivot:
+                large += 1
+
+            # already comparep all n-1 element, swap the pivot to the mid and divide the list
+            if idx == len(nums) - 2:
+                nums[-1], nums[small + 1] = nums[small + 1], nums[-1]
+    
+
+        return self.QuickSort(nums[:small + 1]) + self.QuickSort(nums[small + 1:])
 
 
 class Solution:
