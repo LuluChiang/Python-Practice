@@ -6,14 +6,14 @@ class sortAlgorith:
     # Worst: O(N^2)
     # Best: O(N)!!
         for base in range(len(nums) - 1):
-            no_swap = False
+            no_swap = True
             for bubble in range(len(nums) - 1 - base):
                 if nums[bubble] > nums[bubble + 1]:
                     # nums[bubble], nums[bubble + 1] = nums[bubble + 1], nums[bubble]
                     tmp = nums[bubble]
                     nums[bubble] = nums[bubble + 1]
                     nums[bubble + 1] = tmp
-                    no_swap = True
+                    no_swap = False
             if no_swap:
                 break
         return nums
