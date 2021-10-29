@@ -386,3 +386,35 @@ class Solution:
                 opt[idx] = nums[right] ** 2
                 right -= 1
         return opt[::-1]
+
+# 11. Container With Most Water - Medium
+# Given n non-negative integers a1, a2, ..., an , where each represents a point at coordinate (i, ai). n vertical lines are drawn such that the two endpoints of the line i is at (i, ai) and (i
+# Find two lines, which, together with the x-axis forms a container, such that the container contains the most water.
+# Notice that you may not slant the container.
+# Input: height = [1,8,6,2,5,4,8,3,7]
+# Output: 49
+# 
+# P.S. O(N) solution: https://leetcode.com/problems/container-with-most-water/discuss/6100/Simple-and-clear-proofexplanation  
+#
+    def maxArea(self, height: List[int]) -> int:
+        front, last = 0 , len(height) - 1
+        maxarea = 0
+        while front != last:
+            compare = min(height[front], height[last]) * (last - front)
+            maxarea = max(compare, maxarea)
+            
+            if height[front] > height[last]:
+                last -= 1
+            else:
+                front += 1
+
+        return maxarea
+
+# 42. Trapping Rain Water - Hard
+# Given n non-negative integers representing an elevation map where the width of each bar is 1, 
+# compute how much water it can trap after raining.
+#
+    def trap(self, height: List[int]) -> int:
+
+        return
+ 
