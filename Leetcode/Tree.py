@@ -64,3 +64,54 @@ class Solution:
                 rightn = n - idx
                 sum += self.numTrees(leftn) + self.numTrees(rightn)
         return sum
+
+# 104. Maximum Depth of Binary Tree
+# Given the root of a binary tree, return its maximum depth.
+# A binary tree's maximum depth is the number of nodes along the longest path from the root node down to the farthest leaf node.
+#
+    def maxDepth(self, root: Optional[TreeNode]) -> int:
+        if root == None:
+            return 0
+        if root.left == None and root.right == None:
+            return 1
+        else:
+            return 1 + max(self.maxDepth(root.left), self.maxDepth(root.right))
+        
+# 110. Balanced Binary Tree
+# Given a binary tree, determine if it is height-balanced.
+# For this problem, a height-balanced binary tree is defined as:
+# a binary tree in which the left and right subtrees of every node differ in height by no more than 1.
+    def isBalanced(self, root: Optional[TreeNode]) -> bool:
+        if root == None:
+            return True
+        
+        return abs(self.maxDepth(root.left) - self.maxDepth(root.right)) < 2 and self.isBalanced(root.left) and self.isBalanced(root.right)
+
+# 111. Minimum Depth of Binary Tree
+# Given a binary tree, find its minimum depth.
+# The minimum depth is the number of nodes along the shortest path from the root node down to the nearest leaf node.
+# Note: A leaf is a node with no children.
+    def minDepth(self, root: Optional[TreeNode]) -> int:
+        if not root:
+            return 0
+        if None in [root.left, root.right]:
+            return max(self.minDepth(root.left), self.minDepth(root.right)) + 1
+        else:
+            return min(self.minDepth(root.left), self.minDepth(root.right)) + 1
+
+# 112. Path Sum
+# Given the root of a binary tree and an integer targetSum, return true if the tree has a root-to-leaf path such that adding up all the values along the path equals targetSum.
+# A leaf is a node with no children.
+    def hasPathSum(self, root: Optional[TreeNode], targetSum: int) -> bool:
+        if not root:
+            return False
+        elif not root.left and not root.right:
+            return root.val == targetSum
+        else:
+            targetchildsum = targetSum - root.val
+            return self.hasPathSum(root.left, targetchildsum) or self.hasPathSum(root.right, targetchildsum)
+
+
+
+
+
