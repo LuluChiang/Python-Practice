@@ -418,3 +418,39 @@ class Solution:
 
         return
  
+
+ # 118. Pascal's Triangle
+# Given an integer numRows, return the first numRows of Pascal's triangle.
+# In Pascal's triangle, each number is the sum of the two numbers directly above it as shown:
+    def generate(self, numRows: int) -> List[List[int]]:
+        optList = []
+
+        for idx in range(numRows):
+            optList.append([1] * (idx + 1))
+            if idx > 1:
+                for j in range(1,idx):
+                    optList[idx][j]=optList[idx-1][j-1]+optList[idx-1][j]
+        return optList
+
+# 121. Best Time to Buy and Sell Stock
+# You are given an array prices where prices[i] is the price of a given stock on the ith day.
+# You want to maximize your profit by choosing a single day to buy one stock and choosing a different day in the future to sell that stock.
+# Return the maximum profit you can achieve from this transaction. If you cannot achieve any profit, return 0.
+    def maxProfit(self, prices: List[int]) -> int:
+        opt = 0
+        low_prices = prices[0]
+        for idx in range(len(prices)):
+            if prices[idx] < low_prices:
+                low_prices = prices[idx]
+            opt = max(opt, prices[idx] - low_prices)    
+        return opt
+
+# 125. Valid Palindrome
+# A phrase is a palindrome if, after converting all uppercase letters into lowercase letters and removing all non-alphanumeric characters, it reads the same forward and backward. Alphanumeric characters include letters and numbers.
+# Given a string s, return true if it is a palindrome, or false otherwise.  
+    def isPalindrome(self, s: str) -> bool:
+        opt = ''
+        for ch in s.lower():
+            if ch.isalnum():
+                opt += ch
+        return opt == opt[::-1]
