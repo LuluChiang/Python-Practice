@@ -139,3 +139,23 @@ class Solution:
             if fast == slow: 
                 return True        
         return False
+
+# 160. Intersection of Two Linked Lists  -> ****
+# Given the heads of two singly linked-lists headA and headB, 
+# return the node at which the two lists intersect. 
+# If the two linked lists have no intersection at all, return null.
+#
+# Main idea: L1 + L2 = L2 + L1, then the last node will hit if they intersect
+    def getIntersectionNode(self, headA: ListNode, headB: ListNode) -> ListNode:
+        l1 = headA
+        l2 = headB
+        while l1 and l2:
+            l1 = l1.next
+            l2 = l2.next
+            if l1 == l2:
+                return l1
+            if l1 == None:
+                l1 = headB
+            if l2 == None:
+                l2 = headA
+        return l1 

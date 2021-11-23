@@ -454,3 +454,29 @@ class Solution:
             if ch.isalnum():
                 opt += ch
         return opt == opt[::-1]
+
+# 136. Single Number ***
+# Given a non-empty array of integers nums, every element appears twice except for one. Find that single one.
+# You must implement a solution with a linear runtime complexity and use only constant extra space.
+#
+    def singleNumber(self, nums: List[int]) -> int:
+        opt = 0  
+        for num in nums:
+            opt = opt ^ num     #using XOR
+        return opt
+
+# 167. Two Sum II - Input Array Is Sorted
+# Given a 1-indexed array of integers numbers that is already sorted in non-decreasing order, find two numbers such that they add up to a specific target number. Let these two numbers be numbers[index1] and numbers[index2] where 1 <= index1 < index2 <= numbers.length.
+# Return the indices of the two numbers, index1 and index2, added by one as an integer array [index1, index2] of length 2.
+# The tests are generated such that there is exactly one solution. You may not use the same element twice.
+    def twoSum(self, numbers: List[int], target: int) -> List[int]:
+        front = 0
+        rear = len(numbers) - 1
+        while front != rear:
+            if numbers[front] + numbers[rear] > target:
+                rear -= 1 
+            elif numbers[front] + numbers[rear] < target:
+                front += 1
+            else:
+                return [front + 1, rear + 1]
+        
