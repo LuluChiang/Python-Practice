@@ -147,15 +147,17 @@ class Solution:
 #
 # Main idea: L1 + L2 = L2 + L1, then the last node will hit if they intersect
     def getIntersectionNode(self, headA: ListNode, headB: ListNode) -> ListNode:
+        if not headA or not headB:
+            return None
         l1 = headA
         l2 = headB
-        while l1 and l2:
-            l1 = l1.next
-            l2 = l2.next
-            if l1 == l2:
-                return l1
+        while l1 != l2:
             if l1 == None:
                 l1 = headB
+            else:
+                l1 = l1.next
             if l2 == None:
                 l2 = headA
+            else:
+                l2 = l2.next
         return l1 
