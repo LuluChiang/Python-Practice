@@ -502,3 +502,69 @@ class Solution:
             strOut = chr(mod + 65) + strOut
         
         return strOut
+
+# 191. Number of 1 Bits
+# Write a function that takes an unsigned integer and returns the number of '1' bits it has (also known as the Hamming weight).
+# Constraints:
+#   The input must be a binary string of length 32.    
+    def hammingWeight(self, n: int) -> int:
+        optNum = 0
+        while n != 0:
+            if n % 2 == 1:
+                optNum += 1
+            n = n // 2
+        
+        return optNum
+
+# 190. Reverse Bits
+# Reverse bits of a given 32 bits unsigned integer.
+    def reverseBits(self, n: int) -> int:
+        opt = 0
+        for idx in range(32):
+            opt = opt << 1 + n & 1  
+            n = n >> 1
+        return opt
+
+# 217. Contains Duplicate
+# Given an integer array nums, return true if any value appears at least twice in the array, and return false if every element is distinct.
+    def containsDuplicate(self, nums: List[int]) -> bool:
+        resList = []
+        for num in nums:
+            if num in resList:
+                return True
+            else:
+                resList.append(num)        
+        return False
+    # using set, which can only store different elements
+    def containsDuplicate2(self, nums: List[int]) -> bool:
+        set1 = set(nums)       
+        return not len(nums) == len(set1)
+
+# 202. Happy Number
+# Write an algorithm to determine if a number n is happy.
+# A happy number is a number defined by the following process:
+# Starting with any positive integer, replace the number by the sum of the squares of its digits.
+# Repeat the process until the number equals 1 (where it will stay), or it loops endlessly in a cycle which does not include 1.
+# Those numbers for which this process ends in 1 are happy.
+# Return true if n is a happy number, and false if not.
+    def isHappy(self, n: int) -> bool:
+        loop_n = [n]
+        while n != 1:
+            list_n = [int(digit) for digit in str(n)]
+            n = 0
+            for ele in list_n:
+                n += pow(ele, 2)
+            
+            if n in loop_n:
+                return False
+            else:
+                loop_n.append(n)
+        return True 
+
+
+
+
+
+
+
+
