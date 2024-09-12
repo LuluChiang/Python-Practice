@@ -112,6 +112,33 @@ class Solution:
             return self.hasPathSum(root.left, targetchildsum) or self.hasPathSum(root.right, targetchildsum)
 
 
+# 226. Invert Binary Tree
+# Given the root of a binary tree, invert the tree, and return its root.
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+# 2024/9/12    
+    def invertTree(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
+        
+        # if root == None:
+        #     return None
+        # or use:
+        if not root:  #in python = if root != None
+            return
+        
+        # temp = root.left
+        # root.left = root.right
+        # root.right = temp
+        # or use:
+        (root.left, root.right) = (root.right, root.left) #tuple assignment
 
 
+        # recursive part
+        self.invertTree(root.left)
+        self.invertTree(root.right)
+    
+        return root
 

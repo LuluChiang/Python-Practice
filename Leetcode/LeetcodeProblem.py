@@ -12,9 +12,9 @@ class Solution:
         if(len(nums)) < 2:
             return None
         for i in range(len(nums)):
-            for j in range(i,len(nums)):
+            for j in range(i+1,len(nums)):
                 if nums[i] + nums[j] == target:
-                    #print(str(i) + " + " +  str(j) + " = " + str(target))
+                    print(str(i) + " + " +  str(j) + " = " + str(target))
                     list_ans = [i, j]
                     return list_ans
 
@@ -230,6 +230,24 @@ class Solution:
         
         return count
 
+#20240804
+    def removeDuplicates(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        slow = 0
+        
+        for fast in range(1, len(nums)):
+            if nums[slow] == nums[fast]: 
+                fast += 1
+            else:
+                slow += 1 
+                nums[slow] = nums[fast]
+        return slow+1
+            
+        return count
+
 # 53. Maximum Subarray - easy
 # Given an integer array nums, find the contiguous subarray (containing at least one number) which has the largest sum and return its sum.
 # A subarray is a contiguous part of an array.
@@ -419,7 +437,7 @@ class Solution:
         return
  
 
- # 118. Pascal's Triangle
+ # 118. Pa#scal's Triangle
 # Given an integer numRows, return the first numRows of Pascal's triangle.
 # In Pascal's triangle, each number is the sum of the two numbers directly above it as shown:
     def generate(self, numRows: int) -> List[List[int]]:
@@ -436,6 +454,7 @@ class Solution:
 # You are given an array prices where prices[i] is the price of a given stock on the ith day.
 # You want to maximize your profit by choosing a single day to buy one stock and choosing a different day in the future to sell that stock.
 # Return the maximum profit you can achieve from this transaction. If you cannot achieve any profit, return 0.
+# [7,1,5,3,6,4]
     def maxProfit(self, prices: List[int]) -> int:
         opt = 0
         low_prices = prices[0]
@@ -444,6 +463,22 @@ class Solution:
                 low_prices = prices[idx]
             opt = max(opt, prices[idx] - low_prices)    
         return opt
+
+    #20240804
+    def maxProfit_20240804(self, prices: List[int]) -> int:
+        # divede into:
+        # 1. if 7 is buy, then find the biggest num in [1,5,3,6,4]
+        max_val = prices[1]
+        for i in range(1, len(prices)):
+            if max_val < prices[i]:
+                max_val = prices[i]
+        option1 = max_val - prices[0]
+        # 2. if not buying, find [1,5,3,6,4]
+        option2 = self.maxProfit_20240804(prices[1:])
+        return max(option1, option2)
+    #result: Memory Limit Exceeded
+
+
 
 # 125. Valid Palindrome
 # A phrase is a palindrome if, after converting all uppercase letters into lowercase letters and removing all non-alphanumeric characters, it reads the same forward and backward. Alphanumeric characters include letters and numbers.
@@ -469,7 +504,7 @@ class Solution:
 # Given a 1-indexed array of integers numbers that is already sorted in non-decreasing order, find two numbers such that they add up to a specific target number. Let these two numbers be numbers[index1] and numbers[index2] where 1 <= index1 < index2 <= numbers.length.
 # Return the indices of the two numbers, index1 and index2, added by one as an integer array [index1, index2] of length 2.
 # The tests are generated such that there is exactly one solution. You may not use the same element twice.
-    def twoSum(self, numbers: List[int], target: int) -> List[int]:
+    def twoSum167(self, numbers: List[int], target: int) -> List[int]:
         front = 0
         rear = len(numbers) - 1
         while front != rear:
@@ -561,10 +596,134 @@ class Solution:
                 loop_n.append(n)
         return True 
 
+# 27. Remove Element
+# Given an integer array nums and an integer val, remove all occurrences of val in nums in-place. The order of the elements may be changed. Then return the number of elements in nums which are not equal to val.
+# Consider the number of elements in nums which are not equal to val be k, to get accepted, you need to do the following things:
+# Change the array nums such that the first k elements of nums contain the elements which are not equal to val. The remaining elements of nums are not important as well as the size of nums.
+    def removeElement(self, nums, val) -> int:
+        """
+        :type nums: List[int]
+        :type val: int
+        :rtype: int
+        """
+        i = 0
+        while i < len(nums):
+            if val == nums[i]:
+                nums.remove(val)
+            else:
+                i += 1
+        return len(nums)
+# Time complexity: O(N) 
+
+#55. Jump Game
+# You are given an integer array nums. You are initially positioned at the array's first index, 
+# and each element in the array represents your maximum jump length at that position.
+# Return true if you can reach the last index, or false otherwise.
+# Example 1:
+# Input: nums = [2,3,1,1,4]
+# Output: true
+# Explanation: Jump 1 step from index 0 to 1, then 3 steps to the last index.
+#
+# Example 2:
+# Input: nums = [3,2,1,0,4]
+# Output: false
+# Explanation: You will always arrive at index 3 no matter what. Its maximum jump length is 0, which makes it impossible to reach the last index.
+    def canJump(self, nums: List[int]) -> bool:
+        jump_point = 0     
+        for i in range(len(nums)):
+            jump_point = max(jump_point, nums[i])
+            if jump_point >= len(nums)-1-i:
+                return True
+            else:
+                if jump_point == 0:
+                    return False
+                else:
+                    jump_point -= 1
+        return False
+#   solution concept: 20240806
+#                   check from nums[0~N], consider every number in array as your steps(like RPG game), and check the steps can jump to the end of the array.
+#                   if steps not enough, move 1 step to next number, if the number is greater than your steps, replace the number as your new steps.
+#   time complexity: O(N)
+#   space complexity:O(1)
 
 
+#45. Jump Game II
+# You are given a 0-indexed array of integers nums of length n. You are initially positioned at nums[0].
+# Each element nums[i] represents the maximum length of a forward jump from index i. In other words, if you are at nums[i], you can jump to any nums[i + j] where:
+# 0 <= j <= nums[i] and
+# i + j < n
+# Return the minimum number of jumps to reach nums[n - 1]. The test cases are generated such that you can reach nums[n - 1].
 
+# Example 1:
+# Input: nums = [2,3,1,1,4]
+# Output: 2
+# Explanation: The minimum number of jumps to reach the last index is 2. Jump 1 step from index 0 to 1, then 3 steps to the last index.
+#
+# Example 2:
+# Input: nums = [2,3,0,1,4]
+# Output: 2
 
+# Constraints:
+# 1 <= nums.length <= 104
+# 0 <= nums[i] <= 1000
+# It's guaranteed that you can reach nums[n - 1].
+#
+# Intuition: Two pointer(slow/fast):   
+#       站在position的位置，nums[position] = jump_point = 代表現在可以看到的視野，最遠可以看到 postion + nums[position]
+#       視野 = fast = postion~postion+nums[postion]，往前尋找下一個適合的休息點(next_position)，站在那可以看到更遠的地方(nums[fast] > jump_point)。
+#       視野(fast)往前看的同時，jump_point每次-1，若途中有更大的值就更新(nums[fast] > jump_point)
+#       看到的位置已經到目前位置+nums[position]，就站到最大next_position的地點(position=next_position)，同時count+1
+#       結束條件:如果目前站的位置已經可以跳到最後，則結束。站在position，視野=fast
+    def jump(self, nums: List[int]) -> int:
+        jump_point = 0
+        position = 0
+        min_count = 0
+        for fast in range(len(nums)):
+            # 發現目前的已經可以看到最後
+            if position + nums[position] >= len(nums)-1:
+                return min_count
+            
+            if nums[fast] > jump_point:
+                jump_point = nums[fast]
+                next_position = fast #可以看見視野內的最大值
+            next_position = position + jump_point
+            jump_point -= 1
+            if fast == position + nums[position]:
+                position = next_position
+                min_count += 1
+        return min_count
+            
 
+# 678. Valid Parenthesis String                
+# Given a string s containing only three types of characters: '(', ')' and '*', return true if s is valid.
+# The following rules define a valid string:
+# Any left parenthesis '(' must have a corresponding right parenthesis ')'.
+# Any right parenthesis ')' must have a corresponding left parenthesis '('.
+# Left parenthesis '(' must go before the corresponding right parenthesis ')'.
+# '*' could be treated as a single right parenthesis ')' or a single left parenthesis '(' or an empty string "".
+class Solution:
+    def checkValidString(self, s: str) -> bool:
+        mincount = maxcount = 0
+        for i in range(len(s)):
+            if s[i] == '(':
+                mincount += 1
+                maxcount += 1
+            elif s[i] == ')':
+                mincount -= 1
+                maxcount -= 1
+            else:               # s[i] == '*'
+                mincount -= 1   # take * as ')'
+                maxcount += 1   # take * as '('
+            
+            # if not consider '*', count == 0 mean valid
+            # count < 0 , means there are ')' occur before '('
+            if maxcount < 0: 
+                return False
 
-
+            # if * occur when count == 0 , the '*' must be ' ' or '('        
+            if mincount < 0:
+                mincount = 0
+        return mincount == 0
+        
+        
+     
